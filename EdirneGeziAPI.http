@@ -1,0 +1,23 @@
+@EdirneGeziAPI_HostAddress = http://localhost:5174
+
+### Tüm Kategorileri Listele
+GET {{EdirneGeziAPI_HostAddress}}/api/categories
+Accept: application/json
+
+### Yeni Kategori Ekle (Müzeler)
+POST {{EdirneGeziAPI_HostAddress}}/api/categories
+Content-Type: application/json
+
+{
+  "name": "Müzeler",
+  "iconUrl": "museum_icon"
+}
+
+### Yeni Kategori Ekle (Tarihi Eserler)
+POST {{EdirneGeziAPI_HostAddress}}/api/categories
+Content-Type: application/json
+
+{
+  "name": "Tarihi Eserler",
+  "iconUrl": "history_icon"
+}
