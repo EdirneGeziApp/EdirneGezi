@@ -1,12 +1,12 @@
-namespace EdirneGeziAPI.DTO// Kendi projenin adına göre burayı ayarlayabilirsin
+namespace EdirneGeziAPI.DTO
 {
     public class NearbyPlaceDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string CategoryName { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public double DistanceInMeters { get; set; } 
+        public double DistanceInMeters { get; set; }
     }
 }

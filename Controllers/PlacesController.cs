@@ -29,6 +29,7 @@ namespace EdirneGeziAPI.Controllers
                 p.Id,
                 p.Name,
                 p.Description,
+                p.ImageUrl,
                 CategoryId = p.CategoryId,
                 CategoryName = p.Category?.Name,
                 Latitude = p.Location?.Y,
@@ -54,7 +55,8 @@ namespace EdirneGeziAPI.Controllers
                 place.Id,
                 place.Name,
                 place.Description,
-                CategoryId = place.CategoryId,
+                place.ImageUrl,
+                place.CategoryId,
                 CategoryName = place.Category?.Name,
                 Latitude = place.Location?.Y,
                 Longitude = place.Location?.X
@@ -63,31 +65,32 @@ namespace EdirneGeziAPI.Controllers
             return Ok(result);
         }
 
-        // GET: api/Places/nearby?lat=41.67&lng=26.55&radiusKm=2
         [HttpGet("nearby")]
         public async Task<IActionResult> GetNearbyPlaces(
-            [FromQuery] double lat,
-            [FromQuery] double lng,
-            [FromQuery] double radiusKm = 2)
+    [FromQuery] double lat, // Enlem (41.x)
+    [FromQuery] double lng, // Boylam (26.x)
+    [FromQuery] double radiusKm = 2)
         {
+            // Point tanımı her zaman (Longitude, Latitude) yani (X, Y) olmalıdır.
+            // Kullanıcıdan gelen lat ve lng'yi doğru yerlere yerleştiriyoruz:
             var userLocation = new Point(lng, lat) { SRID = 4326 };
+
             double radiusInMeters = radiusKm * 1000;
 
             var nearbyPlaces = await _context.Places
-                .Where(p => p.Location.IsWithinDistance(userLocation, radiusInMeters))
+                .Where(p => p.Location != null && p.Location.Distance(userLocation) * 111320 <= radiusInMeters)
                 .OrderBy(p => p.Location.Distance(userLocation))
                 .Select(p => new NearbyPlaceDto
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Latitude = p.Location.Y,
-                    Longitude = p.Location.X,
-                    DistanceInMeters = Math.Round(p.Location.Distance(userLocation))
+                    ImageUrl = p.ImageUrl,
+                    // ÇIKTIYI VERİRKEN DE NETLEŞTİRİYORUZ:
+                    Latitude = p.Location.Y,  // Y her zaman Latitude'dur
+                    Longitude = p.Location.X, // X her zaman Longitude'dur
+                    DistanceInMeters = Math.Round(p.Location.Distance(userLocation) * 111320)
                 })
                 .ToListAsync();
-
-            if (!nearbyPlaces.Any())
-                return NotFound("Bu konumun çevresinde hiç mekan bulunamadı.");
 
             return Ok(nearbyPlaces);
         }
@@ -100,6 +103,7 @@ namespace EdirneGeziAPI.Controllers
             {
                 Name = dto.Name,
                 Description = dto.Description,
+                ImageUrl = dto.ImageUrl,
                 CategoryId = dto.CategoryId,
                 Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 }
             };
@@ -112,6 +116,7 @@ namespace EdirneGeziAPI.Controllers
                 place.Id,
                 place.Name,
                 place.Description,
+                place.ImageUrl,
                 place.CategoryId,
                 Latitude = place.Location?.Y,
                 Longitude = place.Location?.X
