@@ -6,3 +6,6 @@ obj/
 *.cache
 appsettings.Development.json
 .DS_Store
+bin/
+obj/
+appsettings.Development.json
