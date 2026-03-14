@@ -2,6 +2,7 @@
 using EdirneGeziAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EdirneGeziAPI.Migrations
 {
     [DbContext(typeof(GeziDbContext))]
-    partial class GeziDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260314120005_YeniMekanlar")]
+    partial class YeniMekanlar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,32 +54,17 @@ namespace EdirneGeziAPI.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Müze"
+                            Name = "Yöresel Lezzet"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Yöresel Lezzet"
+                            Name = "Müze"
                         },
                         new
                         {
                             Id = 4,
                             Name = "Doğa ve Park"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Tarihi Çarşı"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Tarihi Hamam"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Etkinlik ve Festival"
                         });
                 });
 
@@ -122,12 +110,39 @@ namespace EdirneGeziAPI.Migrations
                         },
                         new
                         {
+                            Id = 2,
+                            CategoryId = 2,
+                            Description = "Meşhur Edirne tava ciğeri.",
+                            ImageUrl = "https://images.deliveryhero.io/image/otlob/Products/296726/Main.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.555 41.675)"),
+                            Name = "Tarihi Ciğerci Niyazi Usta"
+                        },
+                        new
+                        {
                             Id = 3,
                             CategoryId = 1,
                             Description = "Gün batımının harika izlendiği tarihi köprü.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Edirne_Meric_Bridge.jpg/1024px-Edirne_Meric_Bridge.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5492 41.6633)"),
                             Name = "Meriç Köprüsü"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 3,
+                            Description = "Su ve müzik sesiyle şifa dağıtan tarihi mekan.",
+                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Complex_of_Sultan_Bayezid_II_Health_Museum.jpg/1024px-Complex_of_Sultan_Bayezid_II_Health_Museum.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5414 41.6853)"),
+                            Name = "Sağlık Müzesi (II. Bayezid Külliyesi)"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 4,
+                            Description = "Meriç nehri kıyısında devasa doğa parkı.",
+                            ImageUrl = "https://edirne.bel.tr/wp-content/uploads/2023/06/sogutluk.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.535 41.66)"),
+                            Name = "Söğütlük Kent Ormanı"
                         },
                         new
                         {
@@ -140,6 +155,24 @@ namespace EdirneGeziAPI.Migrations
                         },
                         new
                         {
+                            Id = 7,
+                            CategoryId = 2,
+                            Description = "Selimiye'nin karşısındaki efsanevi ciğerci.",
+                            ImageUrl = "https://www.aydinciğer.com/img/slider1.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5552 41.676)"),
+                            Name = "Aydın Tava Ciğer"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 3,
+                            Description = "Şehrin binlerce yıllık tarihini anlatan müze.",
+                            ImageUrl = "https://edirnekentmuzesi.org.tr/wp-content/uploads/2021/05/muze-bina.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5582 41.6789)"),
+                            Name = "Edirne Kent Müzesi"
+                        },
+                        new
+                        {
                             Id = 9,
                             CategoryId = 1,
                             Description = "Mimar Sinan'ın Edirne'deki muazzam kervansarayı.",
@@ -149,12 +182,30 @@ namespace EdirneGeziAPI.Migrations
                         },
                         new
                         {
+                            Id = 10,
+                            CategoryId = 4,
+                            Description = "Tarihi güreşlerin yapıldığı yeşil alan.",
+                            ImageUrl = "https://edirne.bel.tr/wp-content/uploads/2023/07/kirkpinar.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5588 41.6931)"),
+                            Name = "Sarayiçi Kırkpınar Er Meydanı"
+                        },
+                        new
+                        {
                             Id = 11,
                             CategoryId = 1,
                             Description = "Osmanlı mimarisinde yeni bir dönemi başlatan eser.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Uc_Serefeli_Mosque.jpg/1024px-Uc_Serefeli_Mosque.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5539 41.6778)"),
                             Name = "Üç Şerefeli Camii"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 3,
+                            Description = "Edirne savunmasının kahramanı Şükrü Paşa'nın anıtı.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/MART/26/sukru-pasa.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5645 41.6822)"),
+                            Name = "Şükrü Paşa Anıtı ve Balkan Savaşı Müzesi"
                         },
                         new
                         {
@@ -176,6 +227,24 @@ namespace EdirneGeziAPI.Migrations
                         },
                         new
                         {
+                            Id = 15,
+                            CategoryId = 2,
+                            Description = "Edirne'nin meşhur tarihi badem ezmecisi.",
+                            ImageUrl = "https://www.kececizade.com/images/kategori-resimler/badem-ezmesi.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.554 41.676)"),
+                            Name = "Keçecizade Badem Ezmecisi"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CategoryId = 2,
+                            Description = "Ciğer sevmeyenler için Edirne'nin en meşhur tarihi köftecisi.",
+                            ImageUrl = "https://kofteciosman.com/wp-content/uploads/2019/04/kofte.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5555 41.6755)"),
+                            Name = "Köfteci Osman"
+                        },
+                        new
+                        {
                             Id = 17,
                             CategoryId = 1,
                             Description = "Avrupa'nın en büyük sinagoglarından biri, restore edilmiş muhteşem yapı.",
@@ -194,6 +263,15 @@ namespace EdirneGeziAPI.Migrations
                         },
                         new
                         {
+                            Id = 19,
+                            CategoryId = 3,
+                            Description = "Balkanların en büyük çocuk ve interaktif eğitim müzesi.",
+                            ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2023/05/cocuk-muzesi.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.585 41.662)"),
+                            Name = "Hasan Ali Yücel Çocuk Müzesi"
+                        },
+                        new
+                        {
                             Id = 20,
                             CategoryId = 1,
                             Description = "Tunca nehri üzerindeki zarif Osmanlı köprüsü.",
@@ -209,6 +287,114 @@ namespace EdirneGeziAPI.Migrations
                             ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2019/12/elektrik-fabrikasi.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5505 41.6708)"),
                             Name = "Tarihi Elektrik Fabrikası"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CategoryId = 3,
+                            Description = "Edirne Belediye Binası içinde yer alan, Atatürk'ün şehre gelişinde konakladığı ve şahsi eşyalarının sergilendiği müze oda.",
+                            ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2019/12/ataturk-odasi.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5564 41.6766)"),
+                            Name = "Atatürk Odası"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CategoryId = 3,
+                            Description = "Fatih Sultan Mehmet'in eğitim gördüğü Saatli Medrese'de kurulan, padişahın hayatını ve İstanbul'un fethini anlatan tematik müze.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/fatih-muzesi/IMG_2056.JPG",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5532 41.6784)"),
+                            Name = "Fatih Sultan Mehmet Müzesi"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CategoryId = 3,
+                            Description = "Edirne'nin ilk özel sanat müzesi olan, içerisinde geniş resim koleksiyonları ve etnografik eserler barındıran kültür merkezi.",
+                            ImageUrl = "https://osmanincimuzesi.com/wp-content/uploads/2021/04/muze-binasi.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5458 41.6742)"),
+                            Name = "Osman İnci Müzesi"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CategoryId = 3,
+                            Description = "Selimiye Camii külliyesi içerisindeki tarihi medresede bulunan, vakıf eserlerinin ve el yazmalarının sergilendiği müze.",
+                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/44e47f20-80d4-478a-853f-7607730e704e.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5605 41.6785)"),
+                            Name = "Selimiye Vakıf Müzesi"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CategoryId = 3,
+                            Description = "Selimiye Camii arkasında yer alan, antik çağlardan günümüze arkeolojik ve etnografik eserlerin sergilendiği şehrin ana müzesi.",
+                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/8b965825-c94a-4710-8b98-639a6742a033.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5585 41.679)"),
+                            Name = "Edirne Müzesi"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CategoryId = 3,
+                            Description = "Selimiye Camii avlusunda yer alan, Osmanlı dönemine ait hat, çini, ahşap ve el yazması nadide eserlerin sergilendiği müze.",
+                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/44e47f20-80d4-478a-853f-7607730e704e.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5595 41.6782)"),
+                            Name = "Türk İslam Eserleri Müzesi"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CategoryId = 3,
+                            Description = "Balkan Savaşları'nın geçtiği tarihi Hıdırlık Tabya'da kurulan, Edirne'nin savunmasını ve Balkan tarihini canlandırmalarla sunan müze.",
+                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/1d50c766-0749-410e-8566-60913c513e4b.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5415 41.685)"),
+                            Name = "Balkan Tarihi Müzesi"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CategoryId = 3,
+                            Description = "Edirne'nin geleneksel konak mimarisini yansıtan, içerisinde şehre özgü etnografik eserlerin ve eski yaşam kültürünün sergilendiği müze.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/TEMMUZ/09/necmi-ige-evi/WhatsApp-Image-2021_07_09-at-13_34_30.jpeg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5555 41.6738)"),
+                            Name = "Necmi İge Evi Etnografya Müzesi"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CategoryId = 3,
+                            Description = "Tarihi kervansaray içerisinde yer alan, geleneksel el sanatlarından modern sergilere kadar pek çok tematik müzeye ev sahipliği yapan kültür kompleksi.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/ekmekcizade/IMG_2050.JPG",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5512 41.6735)"),
+                            Name = "Ekmekçizade Kervansarayı Müzeleri"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CategoryId = 3,
+                            Description = "Dünyaca ünlü heykeltıraş İlhan Koman'ın anısını yaşatan, tarihi Karaağaç Tren Garı yerleşkesinde bulunan modern sanat ve heykel müzesi.",
+                            ImageUrl = "https://trakya.edu.tr/assets/images/content/haberler/icerik/612762a4-c79a-4712-9c17-48f0766d03f5.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5252 41.6515)"),
+                            Name = "İlhan Koman Heykel ve Resim Müzesi"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CategoryId = 3,
+                            Description = "Trakya Bölgesi'ne ait bitki ve hayvan türlerinin, fosillerin ve jeolojik materyallerin sergilendiği, üniversite bünyesindeki bilimsel müze.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2023/OCAK/06/Doga-Tarihi-Muzesi/Doga-Tarihi-Muzesi_1.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5258 41.652)"),
+                            Name = "Doğa Tarihi Müzesi"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CategoryId = 3,
+                            Description = "Karaağaç'ta tarihi gar binası yanında yer alan, Türkiye Cumhuriyeti'nin kuruluş belgeleri ve Milli Mücadele dönemine ait objelerin sergilendiği müze.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/lozan-muzesi/IMG_2062.JPG",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5248 41.6512)"),
+                            Name = "Milli Mücadele ve Lozan Müzesi"
                         },
                         new
                         {
@@ -257,12 +443,75 @@ namespace EdirneGeziAPI.Migrations
                         },
                         new
                         {
+                            Id = 39,
+                            CategoryId = 2,
+                            Description = "Mimar Sinan tarafından Hersekli Semiz Ali Paşa adına inşa edilen, içinde çok sayıda dükkan barındıran ve günümüzde de Edirne ticaretinin kalbi olan tarihi kapalı çarşı.",
+                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ali_Pasha_Bazaar_Edirne_1.jpg/1024px-Ali_Pasha_Bazaar_Edirne_1.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5542 41.6765)"),
+                            Name = "Ali Paşa Çarşısı"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            CategoryId = 2,
+                            Description = "Selimiye Camii'ne gelir sağlamak amacıyla Mimar Sinan tarafından inşa edilen, caminin hemen altında yer alan tarihi ve otantik kapalı çarşı.",
+                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Arasta_Bazaar_Edirne.jpg/1024px-Arasta_Bazaar_Edirne.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5598 41.678)"),
+                            Name = "Arasta Çarşısı"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            CategoryId = 2,
+                            Description = "Eski Camii'ye vakıf olarak Çelebi Mehmet tarafından yaptırılan, Edirne'nin en eski kapalı çarşısı olan ve kilitli kemerleriyle ünlü tarihi ticaret merkezi.",
+                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bedesten_Bazaar_Edirne.jpg/1024px-Bedesten_Bazaar_Edirne.jpg",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5572 41.6768)"),
+                            Name = "Bedesten Çarşısı"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            CategoryId = 3,
+                            Description = "Fatih Sultan Mehmet dönemine tarihlenen ve yan yana bulunan bu iki tarihi yapı, Osmanlı eğitim sisteminin önemli merkezlerindendir; Saatli Medrese günümüzde Fatih Sultan Mehmet Müzesi olarak hizmet vermektedir.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/fatih-muzesi/IMG_2056.JPG",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5528 41.6782)"),
+                            Name = "Peykler ve Saatli Medrese"
+                        },
+                        new
+                        {
                             Id = 43,
                             CategoryId = 1,
                             Description = "Sultan II. Murad'ın beylerbeyi Sinan Paşa tarafından Tunca Nehri yakınlarında yaptırılan, Edirne'deki tek minareli ve erken dönem Osmanlı mimarisinin özgün detaylarını taşıyan tarihi cami.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Beylerbeyi_Mosque_in_Edirne.jpg/1024px-Beylerbeyi_Mosque_in_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5455 41.6785)"),
                             Name = "Beylerbeyi Camii"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            CategoryId = 4,
+                            Description = "Beylerbeyi Camii ile aynı dönemde inşa edilen, Osmanlı hamam mimarisinin klasik özelliklerini taşıyan ve günümüzde de kullanılan tarihi hamam.",
+                            ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/304245,beylerbeyihamami-edirnejpg.png?0",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5458 41.6782)"),
+                            Name = "Beylerbeyi Hamamı"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            CategoryId = 3,
+                            Description = "Sultan II. Murad döneminde inşa edilen, Osmanlı döneminde konaklama merkezi olarak kullanılan ve günümüzde restorasyon sonrası kültürel etkinliklere ev sahipliği yapan tarihi yapı.",
+                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/devecihan/IMG_2044.JPG",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5535 41.6772)"),
+                            Name = "Deveci Han"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            CategoryId = 4,
+                            Description = "Edirne Valisi Mezit Bey tarafından 15. yüzyılda yaptırılan, zemin seviyesinden aşağıda olduğu için 'Çukur Hamam' olarak da bilinen ve günümüzde hala hizmet veren tarihi Osmanlı hamamı.",
+                            ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/304246,mezit-bey-hamami-edirnejpg.png?0",
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5568 41.6767)"),
+                            Name = "Mezit Bey Hamamı"
                         },
                         new
                         {
@@ -275,269 +524,8 @@ namespace EdirneGeziAPI.Migrations
                         },
                         new
                         {
-                            Id = 4,
-                            CategoryId = 2,
-                            Description = "Su ve müzik sesiyle şifa dağıtan tarihi mekan.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Complex_of_Sultan_Bayezid_II_Health_Museum.jpg/1024px-Complex_of_Sultan_Bayezid_II_Health_Museum.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5414 41.6853)"),
-                            Name = "Sağlık Müzesi (II. Bayezid Külliyesi)"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CategoryId = 2,
-                            Description = "Şehrin binlerce yıllık tarihini anlatan müze.",
-                            ImageUrl = "https://edirnekentmuzesi.org.tr/wp-content/uploads/2021/05/muze-bina.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5582 41.6789)"),
-                            Name = "Edirne Kent Müzesi"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CategoryId = 2,
-                            Description = "Edirne savunmasının kahramanı Şükrü Paşa'nın anıtı.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/MART/26/sukru-pasa.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5645 41.6822)"),
-                            Name = "Şükrü Paşa Anıtı ve Balkan Savaşı Müzesi"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            CategoryId = 2,
-                            Description = "Balkanların en büyük çocuk ve interaktif eğitim müzesi.",
-                            ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2023/05/cocuk-muzesi.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.585 41.662)"),
-                            Name = "Hasan Ali Yücel Çocuk Müzesi"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            CategoryId = 2,
-                            Description = "Edirne Belediye Binası içinde yer alan, Atatürk'ün şehre gelişinde konakladığı ve şahsi eşyalarının sergilendiği müze oda.",
-                            ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2019/12/ataturk-odasi.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5564 41.6766)"),
-                            Name = "Atatürk Odası"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            CategoryId = 2,
-                            Description = "Fatih Sultan Mehmet'in eğitim gördüğü Saatli Medrese'de kurulan, padişahın hayatını ve İstanbul'un fethini anlatan tematik müze.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/fatih-muzesi/IMG_2056.JPG",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5532 41.6784)"),
-                            Name = "Fatih Sultan Mehmet Müzesi"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            CategoryId = 2,
-                            Description = "Edirne'nin ilk özel sanat müzesi olan, içerisinde geniş resim koleksiyonları ve etnografik eserler barındıran kültür merkezi.",
-                            ImageUrl = "https://osmanincimuzesi.com/wp-content/uploads/2021/04/muze-binasi.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5458 41.6742)"),
-                            Name = "Osman İnci Müzesi"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            CategoryId = 2,
-                            Description = "Selimiye Camii külliyesi içerisindeki tarihi medresede bulunan, vakıf eserlerinin ve el yazmalarının sergilendiği müze.",
-                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/44e47f20-80d4-478a-853f-7607730e704e.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5605 41.6785)"),
-                            Name = "Selimiye Vakıf Müzesi"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            CategoryId = 2,
-                            Description = "Selimiye Camii arkasında yer alan, antik çağlardan günümüze arkeolojik ve etnografik eserlerin sergilendiği şehrin ana müzesi.",
-                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/8b965825-c94a-4710-8b98-639a6742a033.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5585 41.679)"),
-                            Name = "Edirne Müzesi"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            CategoryId = 2,
-                            Description = "Selimiye Camii avlusunda yer alan, Osmanlı dönemine ait hat, çini, ahşap ve el yazması nadide eserlerin sergilendiği müze.",
-                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/44e47f20-80d4-478a-853f-7607730e704e.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5595 41.6782)"),
-                            Name = "Türk İslam Eserleri Müzesi"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            CategoryId = 2,
-                            Description = "Balkan Savaşları'nın geçtiği tarihi Hıdırlık Tabya'da kurulan, Edirne'nin savunmasını ve Balkan tarihini canlandırmalarla sunan müze.",
-                            ImageUrl = "https://muze.gov.tr/s3/MysFileManagement/KullaniciDosyalari/BasinBulteni/1d50c766-0749-410e-8566-60913c513e4b.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5415 41.685)"),
-                            Name = "Balkan Tarihi Müzesi"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            CategoryId = 2,
-                            Description = "Edirne'nin geleneksel konak mimarisini yansıtan, içerisinde şehre özgü etnografik eserlerin ve eski yaşam kültürünün sergilendiği müze.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/TEMMUZ/09/necmi-ige-evi/WhatsApp-Image-2021_07_09-at-13_34_30.jpeg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5555 41.6738)"),
-                            Name = "Necmi İge Evi Etnografya Müzesi"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            CategoryId = 2,
-                            Description = "Tarihi kervansaray içerisinde yer alan, geleneksel el sanatlarından modern sergilere kadar pek çok tematik müzeye ev sahipliği yapan kültür kompleksi.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/ekmekcizade/IMG_2050.JPG",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5512 41.6735)"),
-                            Name = "Ekmekçizade Kervansarayı Müzeleri"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            CategoryId = 2,
-                            Description = "Dünyaca ünlü heykeltıraş İlhan Koman'ın anısını yaşatan, tarihi Karaağaç Tren Garı yerleşkesinde bulunan modern sanat ve heykel müzesi.",
-                            ImageUrl = "https://trakya.edu.tr/assets/images/content/haberler/icerik/612762a4-c79a-4712-9c17-48f0766d03f5.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5252 41.6515)"),
-                            Name = "İlhan Koman Heykel ve Resim Müzesi"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            CategoryId = 2,
-                            Description = "Trakya Bölgesi'ne ait bitki ve hayvan türlerinin, fosillerin ve jeolojik materyallerin sergilendiği, üniversite bünyesindeki bilimsel müze.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2023/OCAK/06/Doga-Tarihi-Muzesi/Doga-Tarihi-Muzesi_1.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5258 41.652)"),
-                            Name = "Doğa Tarihi Müzesi"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            CategoryId = 2,
-                            Description = "Karaağaç'ta tarihi gar binası yanında yer alan, Türkiye Cumhuriyeti'nin kuruluş belgeleri ve Milli Mücadele dönemine ait objelerin sergilendiği müze.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/lozan-muzesi/IMG_2062.JPG",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5248 41.6512)"),
-                            Name = "Milli Mücadele ve Lozan Müzesi"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            CategoryId = 2,
-                            Description = "Fatih Sultan Mehmet dönemine tarihlenen ve yan yana bulunan bu iki tarihi yapı, Osmanlı eğitim sisteminin önemli merkezlerindendir; Saatli Medrese günümüzde Fatih Sultan Mehmet Müzesi olarak hizmet vermektedir.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/fatih-muzesi/IMG_2056.JPG",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5528 41.6782)"),
-                            Name = "Peykler ve Saatli Medrese"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            CategoryId = 2,
-                            Description = "Sultan II. Murad döneminde inşa edilen, Osmanlı döneminde konaklama merkezi olarak kullanılan ve günümüzde restorasyon sonrası kültürel etkinliklere ev sahipliği yapan tarihi yapı.",
-                            ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/devecihan/IMG_2044.JPG",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5535 41.6772)"),
-                            Name = "Deveci Han"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 3,
-                            Description = "Meşhur Edirne tava ciğeri.",
-                            ImageUrl = "https://images.deliveryhero.io/image/otlob/Products/296726/Main.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.555 41.675)"),
-                            Name = "Tarihi Ciğerci Niyazi Usta"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CategoryId = 3,
-                            Description = "Selimiye'nin karşısındaki efsanevi ciğerci.",
-                            ImageUrl = "https://www.aydinciğer.com/img/slider1.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5552 41.676)"),
-                            Name = "Aydın Tava Ciğer"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CategoryId = 3,
-                            Description = "Edirne'nin meşhur tarihi badem ezmecisi.",
-                            ImageUrl = "https://www.kececizade.com/images/kategori-resimler/badem-ezmesi.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.554 41.676)"),
-                            Name = "Keçecizade Badem Ezmecisi"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CategoryId = 3,
-                            Description = "Ciğer sevmeyenler için Edirne'nin en meşhur tarihi köftecisi.",
-                            ImageUrl = "https://kofteciosman.com/wp-content/uploads/2019/04/kofte.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5555 41.6755)"),
-                            Name = "Köfteci Osman"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryId = 4,
-                            Description = "Meriç nehri kıyısında devasa doğa parkı.",
-                            ImageUrl = "https://edirne.bel.tr/wp-content/uploads/2023/06/sogutluk.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.535 41.66)"),
-                            Name = "Söğütlük Kent Ormanı"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CategoryId = 4,
-                            Description = "Tarihi güreşlerin yapıldığı yeşil alan.",
-                            ImageUrl = "https://edirne.bel.tr/wp-content/uploads/2023/07/kirkpinar.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5588 41.6931)"),
-                            Name = "Sarayiçi Kırkpınar Er Meydanı"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            CategoryId = 5,
-                            Description = "Mimar Sinan tarafından Hersekli Semiz Ali Paşa adına inşa edilen, içinde çok sayıda dükkan barındıran ve günümüzde de Edirne ticaretinin kalbi olan tarihi kapalı çarşı.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ali_Pasha_Bazaar_Edirne_1.jpg/1024px-Ali_Pasha_Bazaar_Edirne_1.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5542 41.6765)"),
-                            Name = "Ali Paşa Çarşısı"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            CategoryId = 5,
-                            Description = "Selimiye Camii'ne gelir sağlamak amacıyla Mimar Sinan tarafından inşa edilen, caminin hemen altında yer alan tarihi ve otantik kapalı çarşı.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Arasta_Bazaar_Edirne.jpg/1024px-Arasta_Bazaar_Edirne.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5598 41.678)"),
-                            Name = "Arasta Çarşısı"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            CategoryId = 5,
-                            Description = "Eski Camii'ye vakıf olarak Çelebi Mehmet tarafından yaptırılan, Edirne'nin en eski kapalı çarşısı olan ve kilitli kemerleriyle ünlü tarihi ticaret merkezi.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bedesten_Bazaar_Edirne.jpg/1024px-Bedesten_Bazaar_Edirne.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5572 41.6768)"),
-                            Name = "Bedesten Çarşısı"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            CategoryId = 6,
-                            Description = "Beylerbeyi Camii ile aynı dönemde inşa edilen, Osmanlı hamam mimarisinin klasik özelliklerini taşıyan ve günümüzde de kullanılan tarihi hamam.",
-                            ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/304245,beylerbeyihamami-edirnejpg.png?0",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5458 41.6782)"),
-                            Name = "Beylerbeyi Hamamı"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            CategoryId = 6,
-                            Description = "Edirne Valisi Mezit Bey tarafından 15. yüzyılda yaptırılan, zemin seviyesinden aşağıda olduğu için 'Çukur Hamam' olarak da bilinen ve günümüzde hala hizmet veren tarihi Osmanlı hamamı.",
-                            ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/304246,mezit-bey-hamami-edirnejpg.png?0",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5568 41.6767)"),
-                            Name = "Mezit Bey Hamamı"
-                        },
-                        new
-                        {
                             Id = 48,
-                            CategoryId = 6,
+                            CategoryId = 4,
                             Description = "Sultan II. Murad döneminde Saray-ı Cedid-i Amire (Yeni Saray) kompleksinin bir parçası olarak inşa edilen, Selimiye Camii'nin hemen yakınında bulunan ve restorasyon sonrası ziyarete açılan tarihi Osmanlı hamamı.",
                             ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/304247,saray-hamami-edirnejpg.png?0",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5605 41.6788)"),
@@ -546,7 +534,7 @@ namespace EdirneGeziAPI.Migrations
                         new
                         {
                             Id = 49,
-                            CategoryId = 6,
+                            CategoryId = 4,
                             Description = "Mimar Sinan tarafından Sokollu Mehmet Paşa adına inşa edilen, çifte hamam planıyla tasarlanmış, Edirne'deki en büyük ve görkemli Osmanlı hamamlarından biri.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Sokollu_Mehmet_Pasha_Hamam_Edirne.jpg/1024px-Sokollu_Mehmet_Pasha_Hamam_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5585 41.6775)"),
@@ -555,38 +543,11 @@ namespace EdirneGeziAPI.Migrations
                         new
                         {
                             Id = 50,
-                            CategoryId = 6,
+                            CategoryId = 4,
                             Description = "Kaleiçi semtinde yer alan ve 15. yüzyılda inşa edildiği tahmin edilen, günümüzde büyük ölçüde harabe durumda olmasına rağmen Edirne'nin askeri ve sosyal geçmişine ışık tutan tarihi hamam yapısı.",
                             ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/304248,yenicerihamami-edirnejpg.png?0",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5485 41.6722)"),
                             Name = "Yeniçeri Hamamı"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            CategoryId = 7,
-                            Description = "Her yıl 5-6 Mayıs tarihlerinde Sarayiçi'nde kutlanan, baharın gelişini simgeleyen asırlık Roman geleneği ve dev Kakava ateşinin yakıldığı muazzam festival.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Kakava_Festivities_Edirne.jpg/1024px-Kakava_Festivities_Edirne.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.559 41.6935)"),
-                            Name = "Kakava & Hıdırellez Şenlikleri"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            CategoryId = 7,
-                            Description = "UNESCO Somut Olmayan Kültürel Miras Listesi'nde yer alan, 1361 yılından beri Sarayiçi Er Meydanı'nda düzenlenen dünyanın en eski spor organizasyonlarından biri.",
-                            ImageUrl = "https://edirne.bel.tr/wp-content/uploads/2023/07/kirkpinar.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5588 41.6931)"),
-                            Name = "Tarihî Kırkpınar Yağlı Güreşleri Festivali"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            CategoryId = 7,
-                            Description = "Yerel tohumların korunması ve gelecek nesillere aktarılması amacıyla Edirne Belediyesi tarafından düzenlenen, bölge çiftçilerini ve doğaseverleri bir araya getiren etkinlik.",
-                            ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2022/03/tohum-takas.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5545 41.676)"),
-                            Name = "Tohum Takas Şenliği"
                         });
                 });
 

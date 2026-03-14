@@ -2,6 +2,7 @@
 using EdirneGeziAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EdirneGeziAPI.Migrations
 {
     [DbContext(typeof(GeziDbContext))]
-    partial class GeziDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260314120712_DuzenlenmisFormat")]
+    partial class DuzenlenmisFormat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -560,33 +563,6 @@ namespace EdirneGeziAPI.Migrations
                             ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/304248,yenicerihamami-edirnejpg.png?0",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5485 41.6722)"),
                             Name = "Yeniçeri Hamamı"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            CategoryId = 7,
-                            Description = "Her yıl 5-6 Mayıs tarihlerinde Sarayiçi'nde kutlanan, baharın gelişini simgeleyen asırlık Roman geleneği ve dev Kakava ateşinin yakıldığı muazzam festival.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Kakava_Festivities_Edirne.jpg/1024px-Kakava_Festivities_Edirne.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.559 41.6935)"),
-                            Name = "Kakava & Hıdırellez Şenlikleri"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            CategoryId = 7,
-                            Description = "UNESCO Somut Olmayan Kültürel Miras Listesi'nde yer alan, 1361 yılından beri Sarayiçi Er Meydanı'nda düzenlenen dünyanın en eski spor organizasyonlarından biri.",
-                            ImageUrl = "https://edirne.bel.tr/wp-content/uploads/2023/07/kirkpinar.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5588 41.6931)"),
-                            Name = "Tarihî Kırkpınar Yağlı Güreşleri Festivali"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            CategoryId = 7,
-                            Description = "Yerel tohumların korunması ve gelecek nesillere aktarılması amacıyla Edirne Belediyesi tarafından düzenlenen, bölge çiftçilerini ve doğaseverleri bir araya getiren etkinlik.",
-                            ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2022/03/tohum-takas.jpg",
-                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5545 41.676)"),
-                            Name = "Tohum Takas Şenliği"
                         });
                 });
 

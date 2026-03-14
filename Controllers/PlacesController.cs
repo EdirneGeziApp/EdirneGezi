@@ -22,7 +22,11 @@ namespace EdirneGeziAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetPlaces()
         {
-            var places = await _context.Places.Include(p => p.Category).ToListAsync();
+            // Verileri veritabanından çekerken ID'ye göre küçükten büyüğe sıralıyoruz
+            var places = await _context.Places
+                .Include(p => p.Category)
+                .OrderBy(p => p.Id) // Sıralamayı yapan kritik satır burası
+                .ToListAsync();
 
             var result = places.Select(p => new
             {
@@ -67,14 +71,11 @@ namespace EdirneGeziAPI.Controllers
 
         [HttpGet("nearby")]
         public async Task<IActionResult> GetNearbyPlaces(
-    [FromQuery] double lat, // Enlem (41.x)
-    [FromQuery] double lng, // Boylam (26.x)
-    [FromQuery] double radiusKm = 2)
+            [FromQuery] double lat, 
+            [FromQuery] double lng, 
+            [FromQuery] double radiusKm = 2)
         {
-            // Point tanımı her zaman (Longitude, Latitude) yani (X, Y) olmalıdır.
-            // Kullanıcıdan gelen lat ve lng'yi doğru yerlere yerleştiriyoruz:
             var userLocation = new Point(lng, lat) { SRID = 4326 };
-
             double radiusInMeters = radiusKm * 1000;
 
             var nearbyPlaces = await _context.Places
@@ -85,9 +86,8 @@ namespace EdirneGeziAPI.Controllers
                     Id = p.Id,
                     Name = p.Name,
                     ImageUrl = p.ImageUrl,
-                    // ÇIKTIYI VERİRKEN DE NETLEŞTİRİYORUZ:
-                    Latitude = p.Location.Y,  // Y her zaman Latitude'dur
-                    Longitude = p.Location.X, // X her zaman Longitude'dur
+                    Latitude = p.Location.Y,
+                    Longitude = p.Location.X,
                     DistanceInMeters = Math.Round(p.Location.Distance(userLocation) * 111320)
                 })
                 .ToListAsync();
