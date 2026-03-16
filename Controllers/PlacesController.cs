@@ -25,7 +25,7 @@ namespace EdirneGeziAPI.Controllers
             // Verileri veritabanından çekerken ID'ye göre küçükten büyüğe sıralıyoruz
             var places = await _context.Places
                 .Include(p => p.Category)
-                .OrderBy(p => p.Id) // Sıralamayı yapan kritik satır burası
+                .OrderBy(p => p.Id) // Sıralamayı yapan satır burası
                 .ToListAsync();
 
             var result = places.Select(p => new

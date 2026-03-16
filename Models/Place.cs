@@ -9,7 +9,7 @@ namespace EdirneGeziAPI.Models
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         
-        // PostGIS ile harita koordinatını (Enlem/Boylam) tutacağımız nokta!
+        // PostGIS ile harita koordinatını (Enlem/Boylam) tutacağımız nokta
         public Point? Location { get; set; }
 
         // Hangi kategoriye ait olduğu

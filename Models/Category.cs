@@ -6,7 +6,7 @@ namespace EdirneGeziAPI.Models
         public required string Name { get; set; }
         public string? IconUrl { get; set; } 
         
-        // Bir kategorinin birden fazla mekanı olabilir
+        // Bir kategoride birden fazla mekanı olabilir
         public ICollection<Place>? Places { get; set; }
     }
 }
