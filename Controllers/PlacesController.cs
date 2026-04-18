@@ -22,10 +22,9 @@ namespace EdirneGeziAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetPlaces()
         {
-            // Verileri veritabanından çekerken ID'ye göre küçükten büyüğe sıralıyoruz
             var places = await _context.Places
                 .Include(p => p.Category)
-                .OrderBy(p => p.Id) // Sıralamayı yapan satır burası
+                .OrderBy(p => p.Id)
                 .ToListAsync();
 
             var result = places.Select(p => new
@@ -69,10 +68,11 @@ namespace EdirneGeziAPI.Controllers
             return Ok(result);
         }
 
+        // GET: api/Places/nearby
         [HttpGet("nearby")]
         public async Task<IActionResult> GetNearbyPlaces(
-            [FromQuery] double lat, 
-            [FromQuery] double lng, 
+            [FromQuery] double lat,
+            [FromQuery] double lng,
             [FromQuery] double radiusKm = 2)
         {
             var userLocation = new Point(lng, lat) { SRID = 4326 };
@@ -121,6 +121,37 @@ namespace EdirneGeziAPI.Controllers
                 Latitude = place.Location?.Y,
                 Longitude = place.Location?.X
             });
+        }
+
+        // GET: api/Places/5/reviews
+        [HttpGet("{id}/reviews")]
+        public async Task<IActionResult> GetReviews(int id)
+        {
+            var placeExists = await _context.Places.AnyAsync(p => p.Id == id);
+            if (!placeExists) return NotFound("Mekan bulunamadı.");
+
+            var reviews = await _context.Reviews
+                .Where(r => r.PlaceId == id)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
+
+            return Ok(reviews);
+        }
+
+        // POST: api/Places/5/reviews
+        [HttpPost("{id}/reviews")]
+        public async Task<IActionResult> AddReview(int id, [FromBody] Review review)
+        {
+            var placeExists = await _context.Places.AnyAsync(p => p.Id == id);
+            if (!placeExists) return NotFound("Yorum yapılmak istenen mekan bulunamadı.");
+
+            review.PlaceId = id;
+            review.CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return Ok(review);
         }
     }
 }

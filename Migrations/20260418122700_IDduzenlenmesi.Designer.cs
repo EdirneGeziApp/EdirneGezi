@@ -2,6 +2,7 @@
 using EdirneGeziAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EdirneGeziAPI.Migrations
 {
     [DbContext(typeof(GeziDbContext))]
-    partial class GeziDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418122700_IDduzenlenmesi")]
+    partial class IDduzenlenmesi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace EdirneGeziAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -108,7 +111,7 @@ namespace EdirneGeziAPI.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Places", (string)null);
+                    b.ToTable("Places");
 
                     b.HasData(
                         new
@@ -412,7 +415,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 34,
                             CategoryId = 1,
-                            Description = "II. Murad tarafından Tunca Nehri kıyısında yaptırılan tarihi cami.",
+                            Description = "II. Murad tarafından Tunca Nehri kıyısında yaptırılan, haziresinde Osmanlı şehzadelerinin kabirlerini barındıran tarihi cami.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/4/4b/Dar%C3%BCl_Hadis_Camii_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5492 41.6685)"),
                             Name = "Dar-ül Hadis Camii"
@@ -421,7 +424,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 35,
                             CategoryId = 1,
-                            Description = "Bizans sınırında görev yapan akıncı beyi Gazi Mihal tarafından yaptırılan tarihi cami.",
+                            Description = "Bizans sınırında görev yapan akıncı beyi Gazi Mihal tarafından Tunca Nehri kıyısında yaptırılan, erken dönem Osmanlı mimarisinin önemli örneklerinden biri.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/4/4e/Gazi_Mihal_Mosque_in_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5412 41.6745)"),
                             Name = "Gazi Mihal Camii"
@@ -430,7 +433,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 36,
                             CategoryId = 1,
-                            Description = "Defterdar Mahmut Paşa tarafından Mimar Sinan'a yaptırılan tarihi cami.",
+                            Description = "Defterdar Mahmut Paşa tarafından Mimar Sinan'a yaptırılan, özgün mimarisi ve merkezi konumuyla dikkat çeken Osmanlı dönemi camii.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Defterdar_Mahmut_Pasa_Camii.jpg/1024px-Defterdar_Mahmut_Pasa_Camii.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5515 41.6758)"),
                             Name = "Defterdar Camii"
@@ -439,7 +442,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 37,
                             CategoryId = 1,
-                            Description = "Fatih Sultan Mehmet'in eşi Sittişah Hatun tarafından yaptırılan tarihi cami.",
+                            Description = "Fatih Sultan Mehmet'in eşi Sittişah Hatun tarafından yaptırılan, Edirne'deki erken Osmanlı mimarisinin ve tek kubbeli yapı tipinin en zarif örneklerinden biri.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/4/4b/Sittisah_Sultan_Mosque_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5498 41.6732)"),
                             Name = "Sittişah Sultan Camii"
@@ -448,7 +451,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 38,
                             CategoryId = 1,
-                            Description = "Edirne'nin Kaleiçi semtinde bulunan tarihi kilise.",
+                            Description = "Edirne'nin Kaleiçi semtinde bulunan, 19. yüzyılda İtalyan topluluğu tarafından inşa edilen ve şehrin çok kültürlü mirasını yansıtan tarihi kilise.",
                             ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/italyan-kilisesi/IMG_2068.JPG",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.551 41.6748)"),
                             Name = "İtalyan Katolik Kilisesi"
@@ -457,7 +460,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 39,
                             CategoryId = 5,
-                            Description = "Mimar Sinan tarafından inşa edilen tarihi kapalı çarşı.",
+                            Description = "Mimar Sinan tarafından Hersekli Semiz Ali Paşa adına inşa edilen, içinde çok sayıda dükkan barındıran ve günümüzde de Edirne ticaretinin kalbi olan tarihi kapalı çarşı.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ali_Pasha_Bazaar_Edirne_1.jpg/1024px-Ali_Pasha_Bazaar_Edirne_1.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5542 41.6765)"),
                             Name = "Ali Paşa Çarşısı"
@@ -466,7 +469,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 40,
                             CategoryId = 5,
-                            Description = "Selimiye Camii'ne gelir sağlamak amacıyla inşa edilen tarihi çarşı.",
+                            Description = "Selimiye Camii'ne gelir sağlamak amacıyla Mimar Sinan tarafından inşa edilen, caminin hemen altında yer alan tarihi ve otantik kapalı çarşı.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Arasta_Bazaar_Edirne.jpg/1024px-Arasta_Bazaar_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5598 41.678)"),
                             Name = "Arasta Çarşısı"
@@ -475,7 +478,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 41,
                             CategoryId = 5,
-                            Description = "Edirne'nin en eski kapalı çarşısı.",
+                            Description = "Eski Camii'ye vakıf olarak Çelebi Mehmet tarafından yaptırılan, Edirne'nin en eski kapalı çarşısı olan ve kilitli kemerleriyle ünlü tarihi ticaret merkezi.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bedesten_Bazaar_Edirne.jpg/1024px-Bedesten_Bazaar_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5572 41.6768)"),
                             Name = "Bedesten Çarşısı"
@@ -484,7 +487,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 42,
                             CategoryId = 2,
-                            Description = "Osmanlı eğitim sisteminin önemli merkezlerindendir.",
+                            Description = "Fatih Sultan Mehmet dönemine tarihlenen ve yan yana bulunan bu iki tarihi yapı, Osmanlı eğitim sisteminin önemli merkezlerindendir.",
                             ImageUrl = "https://www.edirne.gov.tr/kurumlar/edirne.gov.tr/Haberler/2021/NISAN/01/fatih-muzesi/IMG_2056.JPG",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5528 41.6782)"),
                             Name = "Peykler ve Saatli Medrese"
@@ -547,7 +550,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 49,
                             CategoryId = 6,
-                            Description = "Mimar Sinan tarafından inşa edilen görkemli hamam.",
+                            Description = "Mimar Sinan tarafından Sokollu Mehmet Paşa adına inşa edilen görkemli hamam.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Sokollu_Mehmet_Pasha_Hamam_Edirne.jpg/1024px-Sokollu_Mehmet_Pasha_Hamam_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5585 41.6775)"),
                             Name = "Sokollu Mehmet Paşa Hamamı"
@@ -592,7 +595,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 54,
                             CategoryId = 1,
-                            Description = "Karaağaç mevkisinde, 15. yüzyıl Erken Osmanlı dönemine ait tarihi cami.",
+                            Description = "Karaağaç mevkisinde, 15. yüzyıl Erken Osmanlı dönemine ait almaşık duvar yapısıyla dikkat çeken tarihi cami.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/23/Timurtaş_Paşa_Camii.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5386 41.6444)"),
                             Name = "Timurtaş Camii"
@@ -601,7 +604,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 55,
                             CategoryId = 1,
-                            Description = "Sarayiçi bölgesinde bulunan tarihi türbe.",
+                            Description = "Sarayiçi bölgesinde bulunan, Edirne'nin fethi sırasında şehit düştüğüne inanılan Hıdır Baba'ya ait, özellikle Kakava döneminde ziyaret edilen tarihi türbe.",
                             ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/hidir-baba.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.558 41.6915)"),
                             Name = "Hıdır Baba Türbesi"
@@ -610,7 +613,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 56,
                             CategoryId = 1,
-                            Description = "Fatih Sultan Mehmet'in kuşçubaşısı tarafından yaptırılan tarihi cami.",
+                            Description = "Fatih Sultan Mehmet'in kuşçubaşısı Doğan Bey tarafından yaptırılan, özgün minaresi ve erken Osmanlı dönemi mimarisiyle bilinen tarihi cami.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Kuscu_Dogan_Camii_Edirne.jpg/1024px-Kuscu_Dogan_Camii_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5512 41.6815)"),
                             Name = "Kuşçu Doğan Camii"
@@ -619,7 +622,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 57,
                             CategoryId = 1,
-                            Description = "Edirne'nin tarihi mahallelerinden birine adını veren tarihi cami.",
+                            Description = "Edirne'nin tarihi mahallelerinden birine adını veren, klasik Osmanlı mimarisini yansıtan ve mahalle kültürünün merkezinde yer alan tarihi cami.",
                             ImageUrl = "https://www.edirnekulturturizm.gov.tr/resim/hidiragacamii-edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.562 41.6815)"),
                             Name = "Hıdıraga Camii"
@@ -628,7 +631,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 58,
                             CategoryId = 1,
-                            Description = "Çelebi Sultan Mehmed'in kızı tarafından yaptırılan tarihi cami.",
+                            Description = "Çelebi Sultan Mehmed'in kızı Selçuk Hatun tarafından 15. yüzyılda yaptırılan, Edirne'nin tarihi dokusunu yansıtan zarif ve butik bir Osmanlı camisi.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Selcuk_Hatun_Mosque_Edirne.jpg/1024px-Selcuk_Hatun_Mosque_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5562 41.6738)"),
                             Name = "Selçuk Hatun Camii"
@@ -637,7 +640,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 59,
                             CategoryId = 1,
-                            Description = "15. yüzyılda Tunca Nehri kıyısında yaptırılan tarihi yapı.",
+                            Description = "15. yüzyılda Kasımpaşa tarafından Tunca Nehri kıyısında yaptırılan, nehir taşkınlarına karşı koruma amacıyla inşa edilen rıhtımı ve haziresindeki Evliya Kasımpaşa'nın türbesiyle bilinen tarihi yapı.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Evliya_Kasim_Pasha_Mosque_Edirne.jpg/1024px-Evliya_Kasim_Pasha_Mosque_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.545 41.6705)"),
                             Name = "Evliya Kasımpaşa Camii"
@@ -646,7 +649,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 60,
                             CategoryId = 1,
-                            Description = "Kanuni Sultan Süleyman tarafından Mimar Sinan'a yaptırılan tarihi kule.",
+                            Description = "1561 yılında Kanuni Sultan Süleyman tarafından Mimar Sinan'a yaptırılan, Edirne Sarayı'nın ayakta kalan en önemli parçası olup, imparatorluk adaletinin simgesi olarak Tunca Nehri kıyısında yükselen tarihi kule.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Justice_Tower_Edirne.jpg/1024px-Justice_Tower_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5592 41.6918)"),
                             Name = "Adalet Kasrı Kulesi"
@@ -655,7 +658,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 61,
                             CategoryId = 1,
-                            Description = "15. yüzyılda inşasına başlanan devasa saray kompleksi.",
+                            Description = "15. yüzyılda inşasına başlanan ve yüzyıllar boyunca Osmanlı padişahlarına ev sahipliği yapan, günümüzde kazı ve restorasyon çalışmalarıyla ayağa kaldırılan devasa saray kompleksi.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Edirne_Palace_Remains.jpg/1024px-Edirne_Palace_Remains.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5585 41.6925)"),
                             Name = "Edirne Sarayı (Saray-ı Cedid-i Amire)"
@@ -664,7 +667,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 62,
                             CategoryId = 2,
-                            Description = "15. yüzyılda 16 kemerli görkemli tarihi taş köprü.",
+                            Description = "15. yüzyılda Gazi Mihal Bey tarafından Tunca Nehri üzerine inşa ettirilen, Edirne'yi batıya bağlayan stratejik öneme sahip, 16 kemerli görkemli tarihi taş köprü.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Gazi_Mihal_Bridge_Edirne.jpg/1024px-Gazi_Mihal_Bridge_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5407 41.6763)"),
                             Name = "Gazi Mihal Köprüsü"
@@ -673,7 +676,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 63,
                             CategoryId = 2,
-                            Description = "1488 yılında inşa edilen çok kemerli tarihi taş köprü.",
+                            Description = "1488 yılında Mimar Hayrettin tarafından Tunca Nehri üzerine inşa edilen, II. Bayezid Külliyesi'ni şehre bağlayan, döneminin mimari zarafetini taşıyan çok kemerli tarihi taş köprü.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/II._Bayezid_Bridge_Edirne.jpg/1024px-II._Bayezid_Bridge_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5475 41.6848)"),
                             Name = "II. Bayezid Köprüsü"
@@ -682,7 +685,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 64,
                             CategoryId = 4,
-                            Description = "Onlarca çeşit gülün bulunduğu tematik park.",
+                            Description = "Edirne'nin kurtuluşunun 99. yılı anısına oluşturulan, içinde onlarca çeşit gülün bulunduğu ve özellikle bahar aylarında görsel bir şölen sunan şehrin en keyifli tematik parklarından biri.",
                             ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2021/11/gul-bahcesi-acilis.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5825 41.6645)"),
                             Name = "99. Yıl Edirne Gül Bahçesi"
@@ -691,7 +694,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 65,
                             CategoryId = 4,
-                            Description = "Doğa yürüyüşü ve olta balıkçılığı için tercih edilen doğal gölet alanı.",
+                            Description = "Edirne merkeze bağlı Yolageldi Köyü yakınlarında bulunan, doğa yürüyüşü ve olta balıkçılığı için tercih edilen, huzurlu atmosferiyle bilinen doğal gölet alanı.",
                             ImageUrl = "https://lh5.googleusercontent.com/p/AF1QipNqYv9u-1V_v9B-Y6E9X6S4",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.8525 41.5642)"),
                             Name = "Yolageldi Köyü - Bağlar Gölü"
@@ -700,7 +703,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 66,
                             CategoryId = 2,
-                            Description = "1912-1913 Balkan Savaşı şehitleri anısına inşa edilen anıt alan.",
+                            Description = "1912-1913 Balkan Savaşı sırasında Edirne savunmasında şehit düşen askerlerin anısına, Sarayiçi bölgesinde inşa edilen ve her yıl anma törenlerine ev sahipliği yapan manevi değeri yüksek anıt alan.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Balkan_Wars_Memorial_Edirne.jpg/1024px-Balkan_Wars_Memorial_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5615 41.6922)"),
                             Name = "Balkan Şehitliği"
@@ -709,7 +712,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 67,
                             CategoryId = 2,
-                            Description = "7 metrelik çapıyla Guinness Rekorlar Kitabı'na giren devasa sembolik tava.",
+                            Description = "Edirne yaprak ciğerini tanıtmak amacıyla yapılan, 2 ton ağırlığı ve 7 metrelik çapıyla Guinness Rekorlar Kitabı'na giren devasa sembolik tava.",
                             ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2018/05/dev-tava.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.532 41.6665)"),
                             Name = "Dünyanın En Büyük Tavası"
@@ -718,7 +721,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 68,
                             CategoryId = 2,
-                            Description = "Edirne'nin kurtuluşunun 100. yılı anısına inşa edilen modern anıt kompleksi.",
+                            Description = "Edirne'nin düşman işgalinden kurtuluşunun 100. yılı anısına inşa edilen, şehrin bağımsızlık mücadelesini ve bir asırlık özgürlüğünü simgeleyen modern anıt kompleksi.",
                             ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2022/11/100-yil-aniti.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.541 41.6885)"),
                             Name = "Edirne'nin Kurtuluşunun 100. Yıl Anıtı"
@@ -727,7 +730,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 69,
                             CategoryId = 2,
-                            Description = "15. yüzyılda Edirne Sarayı bünyesinde inşa edilen tarihi hamam.",
+                            Description = "15. yüzyılda Edirne Sarayı bünyesinde inşa edilen, saray ahalisinin kullanımı için tasarlanmış ve günümüze kadar ulaşan en önemli saray yapılarından biri olan tarihi hamam.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Kum_Kasri_Hamami_Edirne.jpg/1024px-Kum_Kasri_Hamami_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5582 41.6932)"),
                             Name = "Kum Kasrı Hamamı"
@@ -736,7 +739,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 70,
                             CategoryId = 2,
-                            Description = "Fosil örnekleri ve bölgeye özgü biyolojik türlerin sergilendiği bilimsel müze.",
+                            Description = "Türkiye'nin önemli doğa tarihi müzelerinden biri olup; içerisinde fosil örnekleri, mineral çeşitleri ve bölgeye özgü biyolojik türlerin sergilendiği, Karaağaç yerleşkesinde bulunan bilimsel ve eğitim odaklı müze.",
                             ImageUrl = "https://dogatarihimuzesi.trakya.edu.tr/resim/dogatarihi1.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5235 41.6528)"),
                             Name = "Trakya Üniversitesi Doğa Tarihi Müzesi"
@@ -745,7 +748,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 71,
                             CategoryId = 2,
-                            Description = "Balkan Savaşları'nda Edirne savunmasının merkezi olan tarihi tabya.",
+                            Description = "Balkan Savaşları'nda Edirne savunmasının merkezi olan, Şükrü Paşa'nın karargahı olarak kullanılan ve günümüzde modern bir açık hava müzesine dönüştürülen şehrin en büyük savunma tabyası.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hidirllik_Bastion_Edirne.jpg/1024px-Hidirllik_Bastion_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5412 41.6895)"),
                             Name = "Hıdırlık Tabyaları (Balkan Tarihi Müzesi)"
@@ -754,7 +757,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 72,
                             CategoryId = 2,
-                            Description = "Klasik Osmanlı çeşme mimarisinin en güzel örneklerinden biri.",
+                            Description = "1667-1670 yılları arasında Sadrazam Merzifonlu Kara Mustafa Paşa tarafından yaptırılan, Bedesten Çarşısı köşesinde yer alan ve klasik Osmanlı çeşme mimarisinin en güzel örneklerinden biri olan tarihi yapı.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Kara_Mustafa_Pasha_Fountain_Edirne.jpg/1024px-Kara_Mustafa_Pasha_Fountain_Edirne.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5578 41.6765)"),
                             Name = "Merzifonlu Kara Mustafa Paşa Çeşmesi"
@@ -763,7 +766,7 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 73,
                             CategoryId = 4,
-                            Description = "Tunca Nehri ile çevrili Edirne'nin en önemli doğal sit alanı.",
+                            Description = "Osmanlı döneminde sarayın has bahçesi olarak kullanılan, içerisinde yüzyıllık ağaçların ve şifalı bitkilerin bulunduğu, Tunca Nehri ile çevrili Edirne'nin en önemli doğal sit alanı.",
                             ImageUrl = "https://www.edirne.bel.tr/wp-content/uploads/2019/04/tavuk-ormani.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.557 41.696)"),
                             Name = "Sarayiçi Tavuk Ormanı"
@@ -772,36 +775,11 @@ namespace EdirneGeziAPI.Migrations
                         {
                             Id = 74,
                             CategoryId = 2,
-                            Description = "Geç Osmanlı dönemi sivil mimari özelliklerini taşıyan tarihi yapı.",
+                            Description = "Selimiye Camii'nin gölgesinde yer alan, geç Osmanlı dönemi sivil mimari özelliklerini taşıyan, günümüzde de tarihi dokusu korunarak emniyet birimi olarak kullanılan estetik yapı.",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Edirne_Police_Station.jpg/1024px-Edirne_Police_Station.jpg",
                             Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (26.5612 41.679)"),
                             Name = "Tarihi Selimiye Karakolu"
                         });
-                });
-
-            modelBuilder.Entity("EdirneGeziAPI.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EdirneGeziAPI.Models.Place", b =>

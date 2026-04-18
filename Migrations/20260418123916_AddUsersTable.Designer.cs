@@ -2,6 +2,7 @@
 using EdirneGeziAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EdirneGeziAPI.Migrations
 {
     [DbContext(typeof(GeziDbContext))]
-    partial class GeziDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418123916_AddUsersTable")]
+    partial class AddUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace EdirneGeziAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -108,7 +111,7 @@ namespace EdirneGeziAPI.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Places", (string)null);
+                    b.ToTable("Places");
 
                     b.HasData(
                         new
@@ -801,7 +804,7 @@ namespace EdirneGeziAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("EdirneGeziAPI.Models.Place", b =>
