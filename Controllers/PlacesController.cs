@@ -153,5 +153,54 @@ namespace EdirneGeziAPI.Controllers
 
             return Ok(review);
         }
+
+        // Admin: Tüm yorumları getir
+        [HttpGet("allreviews")]
+        public async Task<IActionResult> GetAllReviews()
+        {
+            var reviews = await _context.Reviews
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
+            return Ok(reviews);
+        }
+
+        // Admin: Yorum sil
+        [HttpDelete("{placeId}/reviews/{reviewId}")]
+        public async Task<IActionResult> DeleteReview(int placeId, int reviewId)
+        {
+            var review = await _context.Reviews.FindAsync(reviewId);
+            if (review == null) return NotFound("Yorum bulunamadı.");
+            _context.Reviews.Remove(review);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Yorum silindi." });
+        }
+
+        // Admin: Mekan sil
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePlace(int id)
+        {
+            var place = await _context.Places.FindAsync(id);
+            if (place == null) return NotFound("Mekan bulunamadı.");
+            _context.Places.Remove(place);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Mekan silindi." });
+        }
+
+        // Admin: Mekan güncelle
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePlace(int id, [FromBody] PlaceCreateDto dto)
+        {
+            var place = await _context.Places.FindAsync(id);
+            if (place == null) return NotFound("Mekan bulunamadı.");
+
+            place.Name = dto.Name;
+            place.Description = dto.Description;
+            place.ImageUrl = dto.ImageUrl;
+            place.CategoryId = dto.CategoryId;
+            place.Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 };
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Mekan güncellendi." });
+        }
     }
 }

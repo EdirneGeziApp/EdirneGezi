@@ -16,16 +16,13 @@ namespace EdirneGeziAPI.Controllers
             _context = context;
         }
 
-        // POST: api/Auth/register
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            // Aynı email ile kayıt var mı kontrol et
             bool emailExists = await _context.Users.AnyAsync(u => u.Email == dto.Email);
             if (emailExists)
                 return BadRequest("Bu email adresi zaten kayıtlı.");
 
-            // Şifreyi hash'le (güvenli saklama)
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
             var user = new User
@@ -38,13 +35,18 @@ namespace EdirneGeziAPI.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Kayıt başarılı!", userId = user.Id, userName = user.UserName });
+            return Ok(new { message = "Kayıt başarılı!", userId = user.Id, userName = user.UserName, isAdmin = false });
         }
 
-        // POST: api/Auth/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
+            // Admin kontrolü
+            if (dto.Email == "admin" && dto.Password == "admin")
+            {
+                return Ok(new { message = "Admin girişi başarılı!", userId = 0, userName = "Admin", isAdmin = true });
+            }
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null)
                 return Unauthorized("Email veya şifre hatalı.");
@@ -53,7 +55,28 @@ namespace EdirneGeziAPI.Controllers
             if (!passwordValid)
                 return Unauthorized("Email veya şifre hatalı.");
 
-            return Ok(new { message = "Giriş başarılı!", userId = user.Id, userName = user.UserName });
+            return Ok(new { message = "Giriş başarılı!", userId = user.Id, userName = user.UserName, isAdmin = false });
+        }
+
+        // Admin: Tüm kullanıcıları getir
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _context.Users
+                .Select(u => new { u.Id, u.UserName, u.Email })
+                .ToListAsync();
+            return Ok(users);
+        }
+
+        // Admin: Kullanıcı sil
+        [HttpDelete("users/{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound("Kullanıcı bulunamadı.");
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Kullanıcı silindi." });
         }
     }
 
