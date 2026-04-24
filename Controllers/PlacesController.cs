@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using EdirneGeziAPI.Data;
 using EdirneGeziAPI.Models;
 using NetTopologySuite.Geometries;
@@ -18,7 +19,6 @@ namespace EdirneGeziAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Places
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetPlaces()
         {
@@ -42,7 +42,6 @@ namespace EdirneGeziAPI.Controllers
             return Ok(result);
         }
 
-        // GET: api/Places/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPlace(int id)
         {
@@ -68,7 +67,6 @@ namespace EdirneGeziAPI.Controllers
             return Ok(result);
         }
 
-        // GET: api/Places/nearby
         [HttpGet("nearby")]
         public async Task<IActionResult> GetNearbyPlaces(
             [FromQuery] double lat,
@@ -79,7 +77,9 @@ namespace EdirneGeziAPI.Controllers
             double radiusInMeters = radiusKm * 1000;
 
             var nearbyPlaces = await _context.Places
-                .Where(p => p.Location != null && p.Location.Distance(userLocation) * 111320 <= radiusInMeters)
+                .Where(p =>
+                    p.Location != null &&
+                    p.Location.Distance(userLocation) * 111320 <= radiusInMeters)
                 .OrderBy(p => p.Location.Distance(userLocation))
                 .Select(p => new NearbyPlaceDto
                 {
@@ -88,14 +88,16 @@ namespace EdirneGeziAPI.Controllers
                     ImageUrl = p.ImageUrl,
                     Latitude = p.Location.Y,
                     Longitude = p.Location.X,
-                    DistanceInMeters = Math.Round(p.Location.Distance(userLocation) * 111320)
+                    DistanceInMeters = Math.Round(
+                        p.Location.Distance(userLocation) * 111320
+                    )
                 })
                 .ToListAsync();
 
             return Ok(nearbyPlaces);
         }
 
-        // POST: api/Places
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> PostPlace([FromBody] PlaceCreateDto dto)
         {
@@ -123,12 +125,13 @@ namespace EdirneGeziAPI.Controllers
             });
         }
 
-        // GET: api/Places/5/reviews
         [HttpGet("{id}/reviews")]
         public async Task<IActionResult> GetReviews(int id)
         {
             var placeExists = await _context.Places.AnyAsync(p => p.Id == id);
-            if (!placeExists) return NotFound("Mekan bulunamadı.");
+
+            if (!placeExists)
+                return NotFound("Mekan bulunamadı.");
 
             var reviews = await _context.Reviews
                 .Where(r => r.PlaceId == id)
@@ -138,12 +141,14 @@ namespace EdirneGeziAPI.Controllers
             return Ok(reviews);
         }
 
-        // POST: api/Places/5/reviews
+        [Authorize]
         [HttpPost("{id}/reviews")]
         public async Task<IActionResult> AddReview(int id, [FromBody] Review review)
         {
             var placeExists = await _context.Places.AnyAsync(p => p.Id == id);
-            if (!placeExists) return NotFound("Yorum yapılmak istenen mekan bulunamadı.");
+
+            if (!placeExists)
+                return NotFound("Yorum yapılmak istenen mekan bulunamadı.");
 
             review.PlaceId = id;
             review.CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
@@ -154,44 +159,56 @@ namespace EdirneGeziAPI.Controllers
             return Ok(review);
         }
 
-        // Admin: Tüm yorumları getir
+        [Authorize(Roles = "Admin")]
         [HttpGet("allreviews")]
         public async Task<IActionResult> GetAllReviews()
         {
             var reviews = await _context.Reviews
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
+
             return Ok(reviews);
         }
 
-        // Admin: Yorum sil
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{placeId}/reviews/{reviewId}")]
         public async Task<IActionResult> DeleteReview(int placeId, int reviewId)
         {
-            var review = await _context.Reviews.FindAsync(reviewId);
-            if (review == null) return NotFound("Yorum bulunamadı.");
+            var review = await _context.Reviews
+                .FirstOrDefaultAsync(r => r.Id == reviewId && r.PlaceId == placeId);
+
+            if (review == null)
+                return NotFound("Yorum bulunamadı.");
+
             _context.Reviews.Remove(review);
             await _context.SaveChangesAsync();
+
             return Ok(new { message = "Yorum silindi." });
         }
 
-        // Admin: Mekan sil
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlace(int id)
         {
             var place = await _context.Places.FindAsync(id);
-            if (place == null) return NotFound("Mekan bulunamadı.");
+
+            if (place == null)
+                return NotFound("Mekan bulunamadı.");
+
             _context.Places.Remove(place);
             await _context.SaveChangesAsync();
+
             return Ok(new { message = "Mekan silindi." });
         }
 
-        // Admin: Mekan güncelle
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePlace(int id, [FromBody] PlaceCreateDto dto)
         {
             var place = await _context.Places.FindAsync(id);
-            if (place == null) return NotFound("Mekan bulunamadı.");
+
+            if (place == null)
+                return NotFound("Mekan bulunamadı.");
 
             place.Name = dto.Name;
             place.Description = dto.Description;
@@ -200,6 +217,7 @@ namespace EdirneGeziAPI.Controllers
             place.Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 };
 
             await _context.SaveChangesAsync();
+
             return Ok(new { message = "Mekan güncellendi." });
         }
     }

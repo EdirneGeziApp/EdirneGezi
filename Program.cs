@@ -1,55 +1,75 @@
 using EdirneGeziAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Veritabanı ve Harita (Npgsql + NetTopologySuite) Ayarı
+// 1. Veritabanı ve Harita Ayarı
 builder.Services.AddDbContext<GeziDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
     o => o.UseNetTopologySuite()));
 
-// 2. CORS İzni: Emülatörün (10.0.2.2) senin bilgisayarına bağlanabilmesi için şart!
+// 2. JWT Ayarları
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddAuthorization();
+
+// 3. CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
         policy.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer(); // Swagger için gerekli explorer
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// --- ÖNEMLİ SIRALAMA BURADAN BAŞLIYOR ---
-
-// 3. STATİK DOSYA DESTEĞİ (RESİMLER İÇİN EN KRİTİK SATIR!)
-// Bu satır wwwroot klasörünü dış dünyaya açar.
 app.UseStaticFiles();
 
-// 4. CORS'u aktif et (Statik dosyalardan sonra, Map'lerden önce)
 app.UseCors();
 
-// Swagger Ayarları
 app.UseSwagger();
 app.UseSwaggerUI();
 
-if (app.Environment.IsDevelopment())
-{
-    // Geliştirme ortamında ek detaylar gerekirse buraya gelir
-}
-
-// Emülatörle çalışırken HTTPS yönlendirmesi bazen sorun çıkarabilir. 
-// Eğer resimler yine gelmezse alttaki satırı başına // koyarak iptal edebilirsin.
 app.UseHttpsRedirection();
 
+// ÖNEMLİ: Authentication, Authorization'dan önce olmalı
+app.UseAuthentication();
 app.UseAuthorization();
 
-// 5. Kontrolcüleri Haritala
 app.MapControllers();
 
 app.Run();
