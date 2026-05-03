@@ -12,11 +12,29 @@ namespace EdirneGeziAPI.Data
         public DbSet<Place> Places { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<PlaceSuggestion> PlaceSuggestions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("postgis");
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Favorite>()
+                .HasIndex(f => new { f.UserId, f.PlaceId })
+                .IsUnique();
+
+            modelBuilder.Entity<Favorite>()
+                .HasOne(f => f.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Favorite>()
+                .HasOne(f => f.Place)
+                .WithMany()
+                .HasForeignKey(f => f.PlaceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Tarihi Eser" },
