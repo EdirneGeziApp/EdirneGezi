@@ -81,6 +81,27 @@ namespace EdirneGeziAPI.Controllers
             });
         }
 
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.NewPassword))
+                return BadRequest("Email ve yeni şifre boş olamaz.");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+
+            if (user == null)
+                return NotFound("Kullanıcı bulunamadı.");
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Şifre başarıyla güncellendi."
+            });
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("users")]
         public async Task<IActionResult> GetUsers()
@@ -157,5 +178,11 @@ namespace EdirneGeziAPI.Controllers
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
+    }
+
+    public class ResetPasswordDto
+    {
+        public required string Email { get; set; }
+        public required string NewPassword { get; set; }
     }
 }

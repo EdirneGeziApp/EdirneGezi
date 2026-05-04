@@ -7,6 +7,7 @@ namespace EdirneGeziAPI.Models
         public string UserName { get; set; } = string.Empty;
         public string Comment { get; set; } = string.Empty;
         public int Rating { get; set; }
+        public string? ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

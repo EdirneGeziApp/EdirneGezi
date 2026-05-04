@@ -5,6 +5,7 @@ using EdirneGeziAPI.Data;
 using EdirneGeziAPI.Models;
 using NetTopologySuite.Geometries;
 using EdirneGeziAPI.DTO;
+using EdirneGeziAPI.Services;
 
 namespace EdirneGeziAPI.Controllers
 {
@@ -13,10 +14,14 @@ namespace EdirneGeziAPI.Controllers
     public class PlacesController : ControllerBase
     {
         private readonly GeziDbContext _context;
+        private readonly IWebHostEnvironment _environment;
+        private readonly ImageModerationService _imageModerationService;
 
-        public PlacesController(GeziDbContext context)
+        public PlacesController(GeziDbContext context, IWebHostEnvironment environment,ImageModerationService imageModerationService)
         {
             _context = context;
+            _environment = environment;
+            _imageModerationService = imageModerationService;
         }
 
         [HttpGet]
@@ -143,15 +148,71 @@ namespace EdirneGeziAPI.Controllers
 
         [Authorize]
         [HttpPost("{id}/reviews")]
-        public async Task<IActionResult> AddReview(int id, [FromBody] Review review)
+        public async Task<IActionResult> AddReview(
+            int id,
+            [FromForm] string userName,
+            [FromForm] string comment,
+            [FromForm] int rating,
+            [FromForm] IFormFile? imageFile)
         {
             var placeExists = await _context.Places.AnyAsync(p => p.Id == id);
 
             if (!placeExists)
                 return NotFound("Yorum yapılmak istenen mekan bulunamadı.");
 
-            review.PlaceId = id;
-            review.CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+            if (string.IsNullOrWhiteSpace(comment))
+                return BadRequest("Yorum boş olamaz.");
+
+            if (rating < 1 || rating > 5)
+                return BadRequest("Puan 1 ile 5 arasında olmalıdır.");
+
+            string? imageUrl = null;
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+                var extension = Path.GetExtension(imageFile.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(extension))
+                    return BadRequest("Sadece jpg, jpeg, png veya webp formatında fotoğraf yüklenebilir.");
+
+                if (imageFile.Length > 5 * 1024 * 1024)
+                    return BadRequest("Fotoğraf boyutu en fazla 5 MB olabilir.");
+                
+                bool isImageSafe = await _imageModerationService.IsImageSafeAsync(imageFile);
+
+                if (!isImageSafe)
+                    return BadRequest("Bu fotoğraf topluluk kurallarına uygun değil.");
+
+                var uploadsFolder = Path.Combine(
+                    _environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
+                    "uploads",
+                    "reviews"
+                );
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = $"{Guid.NewGuid()}{extension}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                imageUrl = $"/uploads/reviews/{fileName}";
+            }
+
+            var review = new Review
+            {
+                PlaceId = id,
+                UserName = userName,
+                Comment = comment,
+                Rating = rating,
+                ImageUrl = imageUrl,
+                CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
+            };
 
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
