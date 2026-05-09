@@ -16,12 +16,18 @@ namespace EdirneGeziAPI.Controllers
         private readonly GeziDbContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly ImageModerationService _imageModerationService;
+        private readonly TextModerationService _textModerationService;
 
-        public PlacesController(GeziDbContext context, IWebHostEnvironment environment,ImageModerationService imageModerationService)
+        public PlacesController(
+            GeziDbContext context,
+            IWebHostEnvironment environment,
+            ImageModerationService imageModerationService,
+            TextModerationService textModerationService)
         {
             _context = context;
             _environment = environment;
             _imageModerationService = imageModerationService;
+            _textModerationService = textModerationService;
         }
 
         [HttpGet]
@@ -163,6 +169,9 @@ namespace EdirneGeziAPI.Controllers
             if (string.IsNullOrWhiteSpace(comment))
                 return BadRequest("Yorum boş olamaz.");
 
+            if (!_textModerationService.IsTextSafe(comment))
+                return BadRequest("Yorumunuz uygunsuz kelime içerdiği için gönderilemedi.");
+
             if (rating < 1 || rating > 5)
                 return BadRequest("Puan 1 ile 5 arasında olmalıdır.");
 
@@ -178,7 +187,7 @@ namespace EdirneGeziAPI.Controllers
 
                 if (imageFile.Length > 5 * 1024 * 1024)
                     return BadRequest("Fotoğraf boyutu en fazla 5 MB olabilir.");
-                
+
                 bool isImageSafe = await _imageModerationService.IsImageSafeAsync(imageFile);
 
                 if (!isImageSafe)

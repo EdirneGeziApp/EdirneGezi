@@ -53,6 +53,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<EdirneGeziAPI.Services.TextModerationService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
