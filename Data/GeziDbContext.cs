@@ -14,6 +14,7 @@ namespace EdirneGeziAPI.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<PlaceSuggestion> PlaceSuggestions { get; set; }
+        public DbSet<RouteSuggestion> RouteSuggestions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

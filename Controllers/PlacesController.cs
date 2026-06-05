@@ -84,28 +84,67 @@ namespace EdirneGeziAPI.Controllers
             [FromQuery] double lng,
             [FromQuery] double radiusKm = 2)
         {
-            var userLocation = new Point(lng, lat) { SRID = 4326 };
-            double radiusInMeters = radiusKm * 1000;
-
-            var nearbyPlaces = await _context.Places
-                .Where(p =>
-                    p.Location != null &&
-                    p.Location.Distance(userLocation) * 111320 <= radiusInMeters)
-                .OrderBy(p => p.Location.Distance(userLocation))
-                .Select(p => new NearbyPlaceDto
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    ImageUrl = p.ImageUrl,
-                    Latitude = p.Location.Y,
-                    Longitude = p.Location.X,
-                    DistanceInMeters = Math.Round(
-                        p.Location.Distance(userLocation) * 111320
-                    )
-                })
+            var places = await _context.Places
+                .Include(p => p.Category)
+                .Where(p => p.Location != null)
                 .ToListAsync();
 
+            var nearbyPlaces = places
+                .Select(p =>
+                {
+                    var distanceInMeters = CalculateDistanceInMeters(
+                        lat,
+                        lng,
+                        p.Location!.Y,
+                        p.Location!.X
+                    );
+
+                    return new NearbyPlaceDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Description = p.Description,
+                        ImageUrl = p.ImageUrl,
+                        CategoryId = p.CategoryId,
+                        CategoryName = p.Category?.Name,
+                        Latitude = p.Location.Y,
+                        Longitude = p.Location.X,
+                        DistanceInMeters = Math.Round(distanceInMeters)
+                    };
+                })
+                .Where(p => p.DistanceInMeters <= radiusKm * 1000)
+                .OrderBy(p => p.DistanceInMeters)
+                .ToList();
+
             return Ok(nearbyPlaces);
+        }
+
+        private static double CalculateDistanceInMeters(
+            double lat1,
+            double lon1,
+            double lat2,
+            double lon2)
+        {
+            const double earthRadiusMeters = 6371000;
+
+            double dLat = ToRadians(lat2 - lat1);
+            double dLon = ToRadians(lon2 - lon1);
+
+            double a =
+                Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                Math.Cos(ToRadians(lat1)) *
+                Math.Cos(ToRadians(lat2)) *
+                Math.Sin(dLon / 2) *
+                Math.Sin(dLon / 2);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            return earthRadiusMeters * c;
+        }
+
+        private static double ToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180;
         }
 
         [Authorize(Roles = "Admin")]

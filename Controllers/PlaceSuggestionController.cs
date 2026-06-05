@@ -46,6 +46,17 @@ namespace EdirneGeziAPI.Controllers
             return role == "Admin" || role == "admin";
         }
 
+        [HttpGet("count")]
+        public async Task<IActionResult> GetMyPlaceSuggestionCount()
+        {
+            int userId = GetUserId();
+
+            var count = await _context.PlaceSuggestions
+                .CountAsync(p => p.UserId == userId);
+
+            return Ok(new { count });
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateSuggestion([FromBody] PlaceSuggestion suggestion)
         {
@@ -73,6 +84,37 @@ namespace EdirneGeziAPI.Controllers
                 .ToListAsync();
 
             return Ok(suggestions);
+        }
+
+        [HttpPut("{id}/edit")]
+        public async Task<IActionResult> EditSuggestion(
+            int id,
+            [FromBody] PlaceSuggestion updatedSuggestion)
+        {
+            if (!IsAdmin())
+                return Forbid();
+
+            var suggestion = await _context.PlaceSuggestions.FindAsync(id);
+
+            if (suggestion == null)
+                return NotFound("Öneri bulunamadı.");
+
+            if (suggestion.Status == "Approved")
+                return BadRequest("Onaylanmış öneri düzenlenemez.");
+
+            suggestion.Name = updatedSuggestion.Name;
+            suggestion.Description = updatedSuggestion.Description;
+            suggestion.CategoryId = updatedSuggestion.CategoryId;
+            suggestion.ImageUrl = updatedSuggestion.ImageUrl;
+            suggestion.Latitude = updatedSuggestion.Latitude;
+            suggestion.Longitude = updatedSuggestion.Longitude;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Mekan önerisi güncellendi."
+            });
         }
 
         [HttpPut("{id}/approve")]

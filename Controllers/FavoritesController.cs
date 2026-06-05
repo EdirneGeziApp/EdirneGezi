@@ -33,7 +33,7 @@ namespace EdirneGeziAPI.Controllers
                 throw new UnauthorizedAccessException("Kullanıcı bilgisi bulunamadı.");
 
             return int.Parse(userIdClaim);
-        }   
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetFavorites()
@@ -67,6 +67,48 @@ namespace EdirneGeziAPI.Controllers
                 .ToListAsync();
 
             return Ok(ids);
+        }
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetFavoriteCount()
+        {
+            int userId = GetUserId();
+
+            var count = await _context.Favorites
+                .CountAsync(f => f.UserId == userId);
+
+            return Ok(new { count });
+        }
+
+        [HttpGet("top")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetTopFavoritePlaces()
+        {
+            var topPlaces = await _context.Favorites
+                .Include(f => f.Place)
+                .Where(f => f.Place != null)
+                .GroupBy(f => new
+                {
+                    f.Place!.Id,
+                    f.Place.Name,
+                    f.Place.Description,
+                    f.Place.ImageUrl,
+                    f.Place.CategoryId
+                })
+                .Select(g => new
+                {
+                    Id = g.Key.Id,
+                    Name = g.Key.Name,
+                    Description = g.Key.Description,
+                    ImageUrl = g.Key.ImageUrl,
+                    CategoryId = g.Key.CategoryId,
+                    FavoriteCount = g.Count()
+                })
+                .OrderByDescending(p => p.FavoriteCount)
+                .Take(5)
+                .ToListAsync();
+
+            return Ok(topPlaces);
         }
 
         [HttpPost("{placeId}")]
