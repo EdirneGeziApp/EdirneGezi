@@ -15,6 +15,7 @@ namespace EdirneGeziAPI.Data
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<PlaceSuggestion> PlaceSuggestions { get; set; }
         public DbSet<RouteSuggestion> RouteSuggestions { get; set; }
+        public DbSet<RouteSuggestionStop> RouteSuggestionStops { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,12 @@ namespace EdirneGeziAPI.Data
                 .HasOne(f => f.Place)
                 .WithMany()
                 .HasForeignKey(f => f.PlaceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<RouteSuggestionStop>()
+                .HasOne(s => s.RouteSuggestion)
+                .WithMany(r => r.Stops)
+                .HasForeignKey(s => s.RouteSuggestionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Category>().HasData(

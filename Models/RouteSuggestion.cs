@@ -14,7 +14,6 @@ namespace EdirneGeziAPI.Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
         public string Places { get; set; } = string.Empty;
 
         public string Duration { get; set; } = string.Empty;
@@ -24,5 +23,7 @@ namespace EdirneGeziAPI.Models
         public string Status { get; set; } = "Pending";
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public List<RouteSuggestionStop> Stops { get; set; } = new();
     }
 }

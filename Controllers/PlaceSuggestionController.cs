@@ -1,5 +1,6 @@
 using EdirneGeziAPI.Data;
 using EdirneGeziAPI.Models;
+using EdirneGeziAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,17 @@ namespace EdirneGeziAPI.Controllers
     public class PlaceSuggestionsController : ControllerBase
     {
         private readonly GeziDbContext _context;
+        private readonly IWebHostEnvironment _environment;
+        private readonly ImageModerationService _imageModerationService;
 
-        public PlaceSuggestionsController(GeziDbContext context)
+        public PlaceSuggestionsController(
+            GeziDbContext context,
+            IWebHostEnvironment environment,
+            ImageModerationService imageModerationService)
         {
             _context = context;
+            _environment = environment;
+            _imageModerationService = imageModerationService;
         }
 
         private int GetUserId()
@@ -58,14 +66,67 @@ namespace EdirneGeziAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSuggestion([FromBody] PlaceSuggestion suggestion)
+        public async Task<IActionResult> CreateSuggestion(
+            [FromForm] string name,
+            [FromForm] string description,
+            [FromForm] int categoryId,
+            [FromForm] double latitude,
+            [FromForm] double longitude,
+            [FromForm] IFormFile? imageFile)
         {
             int userId = GetUserId();
 
-            suggestion.Id = 0;
-            suggestion.UserId = userId;
-            suggestion.Status = "Pending";
-            suggestion.CreatedAt = DateTime.UtcNow;
+            string? imageUrl = null;
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+                var extension = Path.GetExtension(imageFile.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(extension))
+                    return BadRequest("Sadece jpg, jpeg, png veya webp formatında fotoğraf yüklenebilir.");
+
+                if (imageFile.Length > 5 * 1024 * 1024)
+                    return BadRequest("Fotoğraf boyutu en fazla 5 MB olabilir.");
+
+                bool isImageSafe = await _imageModerationService.IsImageSafeAsync(imageFile);
+
+                if (!isImageSafe)
+                    return BadRequest("Bu fotoğraf topluluk kurallarına uygun değil.");
+
+                var uploadsFolder = Path.Combine(
+                    _environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
+                    "uploads",
+                    "place-suggestions"
+                );
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = $"{Guid.NewGuid()}{extension}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                imageUrl = $"/uploads/place-suggestions/{fileName}";
+            }
+
+            var suggestion = new PlaceSuggestion
+            {
+                Id = 0,
+                UserId = userId,
+                Name = name,
+                Description = description,
+                CategoryId = categoryId,
+                Latitude = latitude,
+                Longitude = longitude,
+                ImageUrl = imageUrl,
+                Status = "Pending",
+                CreatedAt = DateTime.UtcNow
+            };
 
             _context.PlaceSuggestions.Add(suggestion);
             await _context.SaveChangesAsync();

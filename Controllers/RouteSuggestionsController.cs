@@ -45,7 +45,6 @@ namespace EdirneGeziAPI.Controllers
             return role == "Admin" || role == "admin";
         }
 
-        // ✅ YENİ: Kullanıcının rota öneri sayısı
         [HttpGet("count")]
         public async Task<IActionResult> GetMyRouteSuggestionCount()
         {
@@ -58,18 +57,27 @@ namespace EdirneGeziAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSuggestion(
-            [FromBody] RouteSuggestion suggestion)
+        public async Task<IActionResult> CreateSuggestion([FromBody] RouteSuggestion suggestion)
         {
             int userId = GetUserId();
+
+            if (suggestion.Stops == null || suggestion.Stops.Count < 2)
+                return BadRequest("Rota için en az 2 durak eklenmelidir.");
 
             suggestion.Id = 0;
             suggestion.UserId = userId;
             suggestion.Status = "Pending";
             suggestion.CreatedAt = DateTime.UtcNow;
 
-            _context.RouteSuggestions.Add(suggestion);
+            for (int i = 0; i < suggestion.Stops.Count; i++)
+            {
+                suggestion.Stops[i].Id = 0;
+                suggestion.Stops[i].Order = i + 1;
+            }
 
+            suggestion.Places = string.Join(", ", suggestion.Stops.Select(s => s.Name));
+
+            _context.RouteSuggestions.Add(suggestion);
             await _context.SaveChangesAsync();
 
             return Ok(new
@@ -85,6 +93,7 @@ namespace EdirneGeziAPI.Controllers
                 return Forbid();
 
             var suggestions = await _context.RouteSuggestions
+                .Include(r => r.Stops.OrderBy(s => s.Order))
                 .OrderByDescending(s => s.CreatedAt)
                 .ToListAsync();
 
@@ -96,6 +105,7 @@ namespace EdirneGeziAPI.Controllers
         public async Task<IActionResult> GetApprovedRoutes()
         {
             var routes = await _context.RouteSuggestions
+                .Include(r => r.Stops.OrderBy(s => s.Order))
                 .Where(r => r.Status == "Approved")
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
@@ -146,23 +156,37 @@ namespace EdirneGeziAPI.Controllers
         }
 
         [HttpPut("{id}/edit")]
-        public async Task<IActionResult> EditSuggestion(
-            int id,
-            [FromBody] RouteSuggestion updatedSuggestion)
+        public async Task<IActionResult> EditSuggestion(int id, [FromBody] RouteSuggestion updatedSuggestion)
         {
             if (!IsAdmin())
                 return Forbid();
 
-            var suggestion = await _context.RouteSuggestions.FindAsync(id);
+            var suggestion = await _context.RouteSuggestions
+                .Include(r => r.Stops)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (suggestion == null)
                 return NotFound("Rota önerisi bulunamadı.");
 
             suggestion.Title = updatedSuggestion.Title;
             suggestion.Description = updatedSuggestion.Description;
-            suggestion.Places = updatedSuggestion.Places;
             suggestion.Duration = updatedSuggestion.Duration;
             suggestion.Distance = updatedSuggestion.Distance;
+
+            if (updatedSuggestion.Stops != null && updatedSuggestion.Stops.Count >= 2)
+            {
+                _context.RouteSuggestionStops.RemoveRange(suggestion.Stops);
+
+                suggestion.Stops = updatedSuggestion.Stops.Select((stop, index) => new RouteSuggestionStop
+                {
+                    Name = stop.Name,
+                    Latitude = stop.Latitude,
+                    Longitude = stop.Longitude,
+                    Order = index + 1
+                }).ToList();
+
+                suggestion.Places = string.Join(", ", suggestion.Stops.Select(s => s.Name));
+            }
 
             await _context.SaveChangesAsync();
 
