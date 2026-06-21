@@ -26,10 +26,17 @@ namespace EdirneGeziAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            bool emailExists = await _context.Users.AnyAsync(u => u.Email == dto.Email);
+            bool emailExists = await _context.Users
+                .AnyAsync(u => u.Email == dto.Email);
 
             if (emailExists)
                 return BadRequest("Bu email adresi zaten kayıtlı.");
+
+            bool userNameExists = await _context.Users
+                .AnyAsync(u => u.UserName == dto.UserName);
+
+            if (userNameExists)
+                return BadRequest("Bu kullanıcı adı zaten kullanılıyor.");
 
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
@@ -57,12 +64,16 @@ namespace EdirneGeziAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == dto.Email);
 
             if (user == null)
                 return Unauthorized("Email veya şifre hatalı.");
 
-            bool passwordValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+            bool passwordValid = BCrypt.Net.BCrypt.Verify(
+                dto.Password,
+                user.PasswordHash
+            );
 
             if (!passwordValid)
                 return Unauthorized("Email veya şifre hatalı.");
@@ -84,10 +95,14 @@ namespace EdirneGeziAPI.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.NewPassword))
+            if (string.IsNullOrWhiteSpace(dto.Email) ||
+                string.IsNullOrWhiteSpace(dto.NewPassword))
+            {
                 return BadRequest("Email ve yeni şifre boş olamaz.");
+            }
 
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == dto.Email);
 
             if (user == null)
                 return NotFound("Kullanıcı bulunamadı.");
